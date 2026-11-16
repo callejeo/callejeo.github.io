@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Callejeo · Itinerarios de viaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!--
+  ============================================================
+  CÓMO EDITAR ESTA PÁGINA
+  ============================================================
+  1. COLORES: cambia los valores de abajo, en :root.
+  2. TEXTOS: busca el texto que ves en la web y cámbialo.
+  3. IMÁGENES: crea una carpeta "img" junto a este archivo y mete tus fotos.
+     - Foto de portada: img/portada.jpg
+     - Fotos de cada ciudad: img/sevilla.jpg, img/ciudad2.jpg, etc.
+  4. NUEVA CIUDAD: copia un bloque <a class="ciudad"> ... </a> entero,
+     pégalo después del último y cambia nombre, texto, días y enlace.
+  ============================================================
+-->
+
+<style>
+  :root {
+    --burdeos: #6b0f1f;      /* color del logo y títulos destacados */
+    --azul: #1d5a7a;         /* color del icono del logo */
+    --crema: #f8f5ef;        /* fondo de bloques */
+    --tinta: #2a2224;        /* texto principal */
+    --gris: #6d6668;         /* texto secundario */
+    --linea: #e6dfd3;        /* bordes suaves */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--tinta);
+    background: #fff;
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible { outline: 3px solid var(--azul); outline-offset: 3px; }
+
+  .contenedor { width: min(1100px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- Cabecera ---------- */
+  header .contenedor {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-block: 1.5rem;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: 2.1rem; letter-spacing: .01em; color: var(--burdeos);
+    display: flex; align-items: center; gap: .15rem;
+  }
+  .logo-icono {
+    width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--azul); display: inline-grid; place-items: center;
+    color: #fff; font-size: 1rem;
+  }
+  nav { display: flex; gap: 2rem; font-weight: 500; font-size: .95rem; }
+  nav a { padding-block: .25rem; border-bottom: 2px solid transparent; }
+  nav a:hover { border-color: var(--burdeos); color: var(--burdeos); }
+
+  /* ---------- Portada ---------- */
+  .portada {
+    background: var(--crema);
+    padding-block: 4rem 0;
+    text-align: center;
+  }
+  .portada h1 {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: clamp(2.2rem, 5.5vw, 3.8rem); line-height: 1.15;
+    max-width: 16ch; margin-inline: auto;
+  }
+  .portada p {
+    max-width: 58ch; margin: 1.5rem auto 0; color: var(--gris); font-size: 1.05rem;
+  }
+  .boton {
+    display: inline-block; margin-top: 2rem;
+    background: var(--burdeos); color: #fff; font-weight: 600;
+    padding: .9rem 1.8rem; border-radius: 999px;
+    transition: background .2s;
+  }
+  .boton:hover { background: #4f0a17; }
+
+  .portada-foto {
+    margin-top: 3.5rem;
+    height: clamp(240px, 42vw, 460px);
+    background:
+      url('img/portada.jpg') center / cover no-repeat,
+      linear-gradient(135deg, var(--azul), var(--burdeos));
+  }
+
+  /* ---------- Ciudades ---------- */
+  .rutas { padding-block: 5rem; }
+  .rutas-cabecera { text-align: center; margin-bottom: 3rem; }
+  .rutas-cabecera h2 {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  }
+  .rutas-cabecera p { color: var(--gris); margin-top: .5rem; }
+
+  .rejilla {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 1.75rem;
+  }
+  .ciudad { display: block; }
+  .ciudad-foto {
+    position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+    background: var(--linea);
+  }
+  .ciudad-foto > div {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform .5s ease;
+  }
+  .ciudad:hover .ciudad-foto > div { transform: scale(1.05); }
+  .dias {
+    position: absolute; left: 0; bottom: 0; z-index: 1;
+    background: var(--burdeos); color: #fff;
+    font-size: .85rem; font-weight: 600; padding: .45rem .9rem;
+  }
+  .ciudad h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem;
+    margin-top: 1rem; color: var(--tinta);
+  }
+  .ciudad:hover h3 { color: var(--burdeos); }
+  .ciudad p { color: var(--gris); font-size: .95rem; margin-top: .35rem; }
+
+  /* Fondos de ejemplo (si no hay foto se ve un degradado).
+     Cuando tengas fotos, cambia la ruta de cada una. */
+  .foto-sevilla  { background-image: url('img/sevilla.jpg'),  linear-gradient(135deg, #c98a3d, #6b0f1f); }
+  .foto-ciudad2  { background-image: url('img/ciudad2.jpg'),  linear-gradient(135deg, #1d5a7a, #6b0f1f); }
+  .foto-ciudad3  { background-image: url('img/ciudad3.jpg'),  linear-gradient(135deg, #6b0f1f, #1d5a7a); }
+  .foto-ciudad4  { background-image: url('img/ciudad4.jpg'),  linear-gradient(135deg, #1d5a7a, #c98a3d); }
+  .foto-ciudad5  { background-image: url('img/ciudad5.jpg'),  linear-gradient(135deg, #c98a3d, #1d5a7a); }
+  .foto-ciudad6  { background-image: url('img/ciudad6.jpg'),  linear-gradient(135deg, #6b0f1f, #c98a3d); }
+
+  /* ---------- Pie ---------- */
+  footer { background: var(--crema); padding-block: 2.5rem; text-align: center; color: var(--gris); font-size: .9rem; }
+  footer .logo { justify-content: center; font-size: 1.5rem; margin-bottom: .5rem; }
+
+  /* ---------- Móvil ---------- */
+  @media (max-width: 900px) { .rejilla { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) {
+    .rejilla { grid-template-columns: 1fr; }
+    nav { gap: 1.25rem; }
+    .logo { font-size: 1.7rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ciudad-foto > div { transition: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="contenedor">
+    <a href="index.html" class="logo" aria-label="Callejeo, inicio">
+<a href="index.html" class="logo"
+  <img src="img/logo.png" alt="Callejeo" height="48">
+</a>    </a>
+    <nav aria-label="Principal">
+      <a href="#rutas">RUTAS</a>
+      <a href="sobre-mi.html">SOBRE MÍ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- PORTADA -->
+  <section class="portada">
+    <div class="contenedor">
+      <h1>El itinerario está hecho, la aventura es tuya.</h1>
+      <p>Rutas diseñadas paso a paso y recorridas de verdad. Olvídate de perder horas improvisando o cruzando la ciudad en metro sin sentido: aquí tienes itinerarios lógicos, tiempos reales y los mejores rincones probados sobre el terreno.</p>
+      <a href="#rutas" class="boton">Ver itinerarios</a>
+    </div>
+    <div class="portada-foto" role="img" aria-label="Plaza de España, Sevilla"></div>
+  </section>
+
+  <!-- CIUDADES -->
+  <section class="rutas" id="rutas">
+    <div class="contenedor">
+      <div class="rutas-cabecera">
+        <h2>Descubre tus próximos destinos</h2>
+        <p>Selecciona una ciudad y empieza a recorrerla a tu propio ritmo</p>
+      </div>
+
+      <div class="rejilla">
+
+        <!-- ===== CIUDAD 1 (copia este bloque para añadir más) ===== -->
+        <a class="ciudad" href="sevilla.html">
+          <div class="ciudad-foto">
+            <div class="foto-sevilla"></div>
+            <span class="dias">3 días</span>
+          </div>
+          <h3>Sevilla</h3>
+          <p>Plaza de España, el barrio de Santa Cruz y las mejores tapas del centro.</p>
+        </a>
+
+        <!-- ===== CIUDAD 2 ===== -->
+        <a class="ciudad" href="ciudad2.html">
+          <div class="ciudad-foto">
+            <div class="foto-ciudad2"></div>
+            <span class="dias">2 días</span>
+          </div>
+          <h3>Madrid</h3>
+          <p>Escribe aquí una frase corta sobre lo mejor de esta ruta.</p>
+        </a>
+
+        <!-- ===== CIUDAD 3 ===== -->
+        <a class="ciudad" href="ciudad3.html">
+          <div class="ciudad-foto">
+            <div class="foto-ciudad3"></div>
+            <span class="dias">2 días</span>
+          </div>
+          <h3>Bilbao</h3>
+          <p>Escribe aquí una frase corta sobre lo mejor de esta ruta.</p>
+        </a>
+
+        <!-- ===== CIUDAD 4 ===== -->
+        <a class="ciudad" href="ciudad4.html">
+          <div class="ciudad-foto">
+            <div class="foto-ciudad4"></div>
+            <span class="dias">3 días</span>
+          </div>
+          <h3>Teruel</h3>
+          <p>Escribe aquí una frase corta sobre lo mejor de esta ruta.</p>
+        </a>
+
+        <!-- ===== CIUDAD 5 ===== -->
+        <a class="ciudad" href="ciudad5.html">
+          <div class="ciudad-foto">
+            <div class="foto-ciudad5"></div>
+            <span class="dias">1 día</span>
+          </div>
+          <h3>Ciudad 5</h3>
+          <p>Escribe aquí una frase corta sobre lo mejor de esta ruta.</p>
+        </a>
+
+        <!-- ===== CIUDAD 6 ===== -->
+        <a class="ciudad" href="ciudad6.html">
+          <div class="ciudad-foto">
+            <div class="foto-ciudad6"></div>
+            <span class="dias">2 días</span>
+          </div>
+          <h3>Ciudad 6</h3>
+          <p>Escribe aquí una frase corta sobre lo mejor de esta ruta.</p>
+        </a>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="contenedor">
+      <img src="img/logo.png" alt="Callejeo" height="48">
+    <p>© 2026 Callejeo. Itinerarios de viaje probados sobre el terreno.</p>
+  </div>
+</footer>
+
+</body>
+</html>
